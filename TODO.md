@@ -10,9 +10,9 @@
 **핵심 가치:** 현재 주석 처리된 SendGrid 연동을 완전히 활성화하여 실제 이메일 발송이 작동하도록 합니다.
 
 ### 🔥 **1.1. SendGrid 실제 발송 활성화**
-- [ ] **백엔드:** `campaigns.service.ts`의 주석 처리된 `processBulkEmailSend` 메서드 활성화
-- [ ] **백엔드:** `sendEmailToUser` 메서드 활성화 및 실제 SendGrid 호출
-- [ ] **백엔드:** LiquidJS 템플릿 렌더링 로직 활성화 (`renderTemplate` 메서드)
+- [x] **백엔드:** `campaigns.service.ts`의 주석 처리된 `processBulkEmailSend` 메서드 활성화
+- [x] **백엔드:** `sendEmailToUser` 메서드 활성화 및 실제 SendGrid 호출
+- [x] **백엔드:** LiquidJS 템플릿 렌더링 로직 활성화 (`renderTemplate` 메서드)
 - [ ] **통합:** 10명 테스트 발송으로 실제 이메일 도착 검증
 
 ### 🛡️ **1.2. 안정성 및 에러 핸들링 강화**
