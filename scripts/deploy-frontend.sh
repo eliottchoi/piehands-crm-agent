@@ -1,11 +1,12 @@
 #!/bin/bash
 # Piehands CRM Frontend Deployment Script
-# Deploys the React frontend to Vercel
+# Deploys the React frontend to Firebase Hosting
 
 # --- Configuration ---
 PROJECT_ID="agent-growth-and-ops"
 BACKEND_SERVICE_NAME="crm-backend"
 REGION="us-central1"
+FIREBASE_SITE_NAME="piehands-crm-app" # From firebase.json
 
 # --- Script Start ---
 set -e # Exit immediately if a command exits with a non-zero status.
@@ -13,6 +14,7 @@ set -e # Exit immediately if a command exits with a non-zero status.
 echo "🚀 Piehands CRM Frontend Deployment Script"
 echo "=========================================="
 echo "📋 Target Project: $PROJECT_ID"
+echo "🔥 Firebase Site: $FIREBASE_SITE_NAME"
 echo ""
 
 # 1. Fetch Backend URL from Cloud Run
@@ -28,26 +30,28 @@ fi
 echo "✅ Backend URL found: $BACKEND_URL"
 echo ""
 
-# 2. Deploy to Vercel
-echo "🔼 Deploying to Vercel..."
+# 2. Build the React application with the backend URL
+echo "📦 Building React application..."
 cd frontend
 
-# Set the backend URL as a Vercel environment variable for the production build
-export VITE_API_BASE_URL="$BACKEND_URL"
+# Create a temporary .env.production file for the build
+echo "VITE_API_BASE_URL=$BACKEND_URL" > .env.production
+echo "🔧 Created .env.production with backend URL."
 
-# Deploy to production and pipe the output URL to the clipboard
-# The --prod flag creates a production deployment.
-# Vercel CLI will automatically build and deploy the project.
-vercel --prod --build-env VITE_API_BASE_URL="$BACKEND_URL"
+npm run build
 
-# The vercel command will output the deployment URL.
-# If you need to capture it for scripting:
-# DEPLOYMENT_URL=$(vercel --prod --build-env VITE_API_BASE_URL="$BACKEND_URL")
-# echo "Deployment URL: $DEPLOYMENT_URL"
+# Clean up the temporary env file
+rm .env.production
+echo "🗑️ Removed temporary .env.production file."
 
+# 3. Deploy to Firebase Hosting
+echo "🔼 Deploying to Firebase Hosting..."
+# The --only flag targets the specific site defined in firebase.json
+firebase deploy --only hosting:$FIREBASE_SITE_NAME --project "$PROJECT_ID"
+
+cd ..
 echo ""
-echo "✅ Frontend deployment process initiated with Vercel."
-echo "🌍 Monitor the deployment status in your Vercel dashboard."
+echo "✅ Frontend deployment to Firebase Hosting successful!"
+echo "🌍 Live URL: https://$FIREBASE_SITE_NAME.web.app"
 echo ""
-
 # --- End of Script ---

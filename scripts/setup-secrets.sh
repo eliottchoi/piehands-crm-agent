@@ -7,9 +7,9 @@ PROJECT_ID="agent-growth-and-ops"
 # List of secrets to create
 # Format: "SECRET_NAME:SECRET_VALUE"
 # To generate a new JWT_SECRET, run: openssl rand -base64 32
+# SENDGRID_API_KEY is managed separately and should not be overwritten by this script.
 SECRETS=(
     "JWT_SECRET:$(openssl rand -base64 32)"
-    "SENDGRID_API_KEY:your_sendgrid_api_key_here"
     "SENDGRID_FROM_EMAIL:your_from_email@example.com"
     "SENDGRID_FROM_NAME:Your Company Name"
 )
